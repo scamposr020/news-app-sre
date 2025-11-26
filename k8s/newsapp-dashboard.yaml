@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: newsapp-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  newsapp-dashboard.json: |
+    {
+      "id": null,
+      "title": "News App Dashboard (Update Test)",
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 3,
+      "panels": [
+        {
+          "type": "stat",
+          "title": "📰 Total de Noticias Nuevas Detectadas",
+          "datasource": null,
+          "targets": [
+            {
+              "expr": "sum(nuevas_noticias_total) or vector(0)",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+        },
+        {
+          "type": "timeseries",
+          "title": "⏱ Latencia Promedio /nuevos (segundos)",
+          "datasource": null,
+          "targets": [
+            {
+              "expr": "rate(latencia_peticion_seconds_sum[5m]) / rate(latencia_peticion_seconds_count[5m])",
+              "refId": "A"
+            }
+          ],
+          "gridPos": { "x": 0, "y": 8, "w": 24, "h": 10 }
+        }
+      ]
+    }

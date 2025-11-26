@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: news-app
+  namespace: monitoring
+  labels:
+    app: news-app
+spec:
+  selector:
+    app: news-app
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+      protocol: TCP

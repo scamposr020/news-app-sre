@@ -1,0 +1,5 @@
+Flask
+requests
+beautifulsoup4
+prometheus_flask_exporter
+prometheus_client

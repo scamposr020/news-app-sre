@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-app
+  namespace: monitoring
+  labels:
+    app: news-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: news-app
+  template:
+    metadata:
+      labels:
+        app: news-app
+    spec:
+      containers:
+      - name: news-app
+        image: esr11/news-app:latest
+        ports:
+        - containerPort: 5000

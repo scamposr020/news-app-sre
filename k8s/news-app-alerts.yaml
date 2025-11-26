@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: news-detection-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring   # debe coincidir con el nombre del release del Prometheus stack
+spec:
+  groups:
+    - name: news-detection.rules
+      rules:
+        # Alerta cuando se detecta una nueva noticia
+        - alert: NewsFound
+          expr: increase(nuevas_noticias_total[1m]) > 0
+          for: 30s
+          labels:
+            severity: info
+          annotations:
+            summary: "Nueva noticia detectada"
+            description: |
+              La aplicación *News App* ha detectado al menos una noticia nueva en el último minuto.
+              Cantidad detectada: {{ $value }}
+
+        # Alerta cuando la latencia promedio supera los 2 segundos
+        - alert: NewsAppHighLatency
+          expr: rate(latencia_peticion_seconds_sum[5m]) / rate(latencia_peticion_seconds_count[5m]) > 2
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Latencia alta en endpoint /nuevos"
+            description: |
+              La latencia promedio de las peticiones al endpoint */nuevos* supera los 2 segundos
+              durante más de 2 minutos.
+              Valor actual: {{ $value | printf "%.2f" }}s

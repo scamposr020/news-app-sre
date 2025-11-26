@@ -1,0 +1,78 @@
+{
+  "uid": "news-app",
+  "title": "News App Metrics",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Noticias nuevas en los últimos 5 minutos",
+      "targets": [
+        {
+          "expr": "increase(nuevas_noticias_total[5m])",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus",
+      "id": 1
+    },
+    {
+      "type": "graph",
+      "title": "Total acumulado de noticias nuevas",
+      "targets": [
+        {
+          "expr": "nuevas_noticias_total",
+          "legendFormat": "Total",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus",
+      "id": 2
+    },
+    {
+      "type": "graph",
+      "title": "Latencia promedio (últimos 5m)",
+      "targets": [
+        {
+          "expr": "rate(latencia_peticion_seconds_sum[5m]) / rate(latencia_peticion_seconds_count[5m])",
+          "legendFormat": "Promedio",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus",
+      "id": 3,
+      "yaxes": [
+        {
+          "format": "s",
+          "label": "segundos",
+          "logBase": 1,
+          "min": 0,
+          "show": true
+        },
+        {
+          "show": false
+        }
+      ]
+    },
+    {
+      "type": "heatmap",
+      "title": "Distribución de latencia (/nuevos)",
+      "targets": [
+        {
+          "expr": "latencia_peticion_seconds_bucket",
+          "legendFormat": "latencia",
+          "refId": "A"
+        }
+      ],
+      "datasource": "Prometheus",
+      "id": 4,
+      "heatmap": {},
+      "yAxis": {
+        "format": "short"
+      }
+    }
+  ],
+  "schemaVersion": 30,
+  "version": 1,
+  "refresh": "5s"
+}
